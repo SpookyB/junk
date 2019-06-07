@@ -1,9 +1,3 @@
-A = ('abef', 'abce', 'btfx', 'abdx', 'abbc')
-B = ('a', 'b', 'c', 'aa', 'ab', 'ac', 'bb', 'cc', 'aba',
-    'abb', 'abc', 'aca', 'acb', 'acc', 'bba', 'bbc', 'cca',
-    'abaa', 'abab', 'abac', 'abbb', 'abbc', 'abca', 'abcb')
-s = 'ab'
-
 class LazyTernaryTree(dict):
 
     def __init__(self, identity):
@@ -37,7 +31,7 @@ class LazyTernaryTree(dict):
         if  self[branch] == None or value == '':
             return prefix
         return self[branch].biggest_prefix(value, prefix) 
-        
+
     # Utility function, not necessary for the problem domain.
     # def contains(self, value):
     #     branch = self.eval(value)
@@ -49,23 +43,31 @@ class LazyTernaryTree(dict):
     #        return False
     #     return self[branch].contains(value)
 
-B_ = sorted(
-    filter(lambda b: b.startswith(s), B),
-    key=len)
-A_ = list(filter(lambda b: b.startswith(s), A))
+def ABs(A, B, s):
 
-B_tree = LazyTernaryTree(B_.pop(0))
-for b_ in B_:
-    B_tree.append(b_)
+    B_ = sorted(
+        filter(lambda b: b.startswith(s), B),
+        key=len)
+    A_ = list(filter(lambda b: b.startswith(s), A))
 
-solution = list(filter(lambda a_: B_tree.biggest_prefix(a_) == s, A_))
+    B_tree = LazyTernaryTree(B_.pop(0))
+    for b_ in B_:
+        B_tree.append(b_)
 
+    solution = list(filter(lambda a_: B_tree.biggest_prefix(a_) == s, A_))
 
-print(B_)
-#['ab', 'aba', 'abb', 'abc', 'abaa', 'abab', 'abac', 'abbb', 'abbc', 'abca', 'abcb']
-print(A_)
-#['abef', 'abce', 'abdx', 'abbc']
-print(solution)
-#['abef', 'abdx']
+    print(B_)
+    #['ab', 'aba', 'abb', 'abc', 'abaa', 'abab', 'abac', 'abbb', 'abbc', 'abca', 'abcb']
+    print(A_)
+    #['abef', 'abce', 'abdx', 'abbc']
+    print(solution)
+    #['abef', 'abdx']
 
+if __name__ == '__main__':
+    A = ('abef', 'abce', 'btfx', 'abdx', 'abbc')
+    B = ('a', 'b', 'c', 'aa', 'ab', 'ac', 'bb', 'cc', 'aba',
+        'abb', 'abc', 'aca', 'acb', 'acc', 'bba', 'bbc', 'cca',
+        'abaa', 'abab', 'abac', 'abbb', 'abbc', 'abca', 'abcb')
+    s = 'ab'
+    ABs(A, B, s)
 
