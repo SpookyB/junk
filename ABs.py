@@ -1,8 +1,8 @@
 A = ('abef', 'abce', 'btfx', 'abdx', 'abbc')
-B = ("a", "b", "c", "aa", "ab", "ac", "bb", "cc", "aba",
-    "abb", "abc", "aca", "acb", "acc", "bba", "bbc", "cca",
-    "abaa", "abab", "abac", "abbb", "abbc", "abca", "abcb")
-s = "ab"
+B = ('a', 'b', 'c', 'aa', 'ab', 'ac', 'bb', 'cc', 'aba',
+    'abb', 'abc', 'aca', 'acb', 'acc', 'bba', 'bbc', 'cca',
+    'abaa', 'abab', 'abac', 'abbb', 'abbc', 'abca', 'abcb')
+s = 'ab'
 
 class LazyTernaryTree(dict):
 
