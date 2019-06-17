@@ -8,25 +8,23 @@ REQUIRE_ADMIN = True
 MESSAGE_LIMIT = 10000
 FROM_DATE = datetime.datetime.today() - datetime.timedelta(days=7) #one week ago
 
-count = lambda iterable: reduce((lambda x, y: x + 1), iterable, 0)
-
 bot = commands.Bot(command_prefix=PREFIX)
+bot.busy = False
 
-BUSY = False
 @bot.command()
 async def sort(ctx):
 
-    if BUSY:
+    if bot.busy:
         await ctx.send(f"```Channels are already being processed```")
         return
 
-    BUSY = True
+    bot.busy = True
     await ctx.send(f"```Sorting channels```")
     print('\n== RECIEVED SORT COMMAND ==')
 
     if REQUIRE_ADMIN and not dict(iter(ctx.message.author.guild_permissions))['administrator']:
         print(f"<exiting> {ctx.message.author} is not an administrator")
-        BUSY = False
+        bot.busy = False
         return
 
     print('>> reading channels <<')
@@ -34,9 +32,10 @@ async def sort(ctx):
     for channel in ctx.guild.text_channels:
         if channel.category == None:
             try: 
-                history = await channel.history(after=FROM_DATE, limit=MESSAGE_LIMIT)
-                message_count = count(history)
-                channels.append({'ref': channel, 'count': message_count})
+                count = 0
+                async for message in channel.history(after=FROM_DATE, limit=MESSAGE_LIMIT):
+                    count += 1
+                channels.append({'ref': channel, 'count': count})
             except:
                 print(f'<error> cannot read {channel.name}')
 
@@ -45,12 +44,12 @@ async def sort(ctx):
     for index, channel in enumerate(channels):
         try:
             await channel['ref'].edit(position=index)
-            print(f'Sent {channel['ref'].name} with {channel['count']} messages to position {index}')
+            print(f'Sent {channel["ref"].name} with {channel["count"]} messages to position {index}')
         except:
             print(f'<error> cannot move {channel.name}')
 
     print('<exiting> success')
     await ctx.send(f"```Sorting channels complete :)```")
-    BUSY = False
+    bot.busy = False
 
 bot.run(TOKEN)
