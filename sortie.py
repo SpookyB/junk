@@ -13,7 +13,7 @@ count = lambda iterable: reduce((lambda x, y: x + 1), iterable, 0)
 bot = commands.Bot(command_prefix=PREFIX)
 
 BUSY = False
-@bot.command()datetime.datetime.today()
+@bot.command()
 async def sort(ctx):
 
     if BUSY:
